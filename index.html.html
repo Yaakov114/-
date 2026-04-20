@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+  <title>כנרת 2026 — לייב</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800;900&family=Heebo:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="loadingScreen" class="screen active center-screen gradient-bg">
+    <div class="center-card">
+      <div class="logo">🏕️</div>
+      <h1>כנרת 2026</h1>
+      <p>טוען אפליקציה...</p>
+    </div>
+  </div>
+
+  <div id="authScreen" class="screen center-screen gradient-bg">
+    <div class="center-card">
+      <div class="logo">🏕️</div>
+      <h1>כנרת 2026</h1>
+      <p class="sub">אפליקציה חיה עם שיתוף בזמן אמת</p>
+
+      <div class="form-block">
+        <label>השם שלך</label>
+        <input id="displayNameInput" class="input" placeholder="לדוגמה: יעקב" />
+      </div>
+
+      <div class="row gap12">
+        <button id="createRoomBtn" class="btn btn-primary">צור חדר חדש</button>
+        <button id="joinRoomToggleBtn" class="btn btn-secondary">הצטרף לחדר</button>
+      </div>
+
+      <div id="joinRoomBox" class="hidden">
+        <div class="form-block">
+          <label>קוד חדר</label>
+          <input id="roomCodeInput" class="input" placeholder="לדוגמה: KIN26" />
+        </div>
+        <button id="joinRoomBtn" class="btn btn-primary full">הצטרף</button>
+      </div>
+
+      <div class="helper">
+        כניסה מתבצעת בצורה אנונימית מאחורי הקלעים. כל מי שנכנס עם קוד החדר רואה את אותם נתונים בזמן אמת.
+      </div>
+    </div>
+  </div>
+
+  <div id="appScreen" class="screen">
+    <div class="app-shell">
+      <header class="header">
+        <div class="header-top">
+          <div>
+            <div id="tripTitle" class="head-title">כנרת 2026 🏕️</div>
+            <div class="badge-line">
+              <button id="copyRoomCodeBtn" class="code-badge clickable">----</button>
+              <span class="dot"></span>
+              <span class="status-text">לייב</span>
+            </div>
+            <div id="currentUserLabel" class="head-sub">👤 ...</div>
+          </div>
+          <div class="header-actions">
+            <button id="openSettingsBtn" class="icon-btn">⚙️</button>
+            <button id="leaveRoomBtn" class="icon-btn">🚪</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="content">
+        <section id="tab-checklist" class="tab-pane active"></section>
+        <section id="tab-members" class="tab-pane"></section>
+        <section id="tab-ideas" class="tab-pane"></section>
+        <section id="tab-expenses" class="tab-pane"></section>
+      </main>
+
+      <button id="fabChecklist" class="fab fab-orange">+</button>
+      <button id="fabExpenses" class="fab fab-green hidden">+</button>
+
+      <nav class="bottom-nav">
+        <button class="nav-tab active" data-tab="checklist">
+          <span class="nav-line"></span>
+          <span class="tab-icon">🎒</span>
+          <span class="tab-label">ציוד</span>
+          <span id="badgeChecklist" class="nav-badge blue">0/0</span>
+        </button>
+        <button class="nav-tab" data-tab="members">
+          <span class="nav-line"></span>
+          <span class="tab-icon">👥</span>
+          <span class="tab-label">חברים</span>
+        </button>
+        <button class="nav-tab" data-tab="ideas">
+          <span class="nav-line"></span>
+          <span class="tab-icon">💡</span>
+          <span class="tab-label">רעיונות</span>
+          <span id="badgeIdeas" class="nav-badge">0</span>
+        </button>
+        <button class="nav-tab" data-tab="expenses">
+          <span class="nav-line"></span>
+          <span class="tab-icon">💰</span>
+          <span class="tab-label">הוצאות</span>
+          <span id="badgeExpenses" class="nav-badge">0</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+
+  <div id="settingsModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-title">⚙️ הגדרות חדר</div>
+      <div class="stack">
+        <div class="form-block">
+          <label>שם הטיול</label>
+          <input id="settingsTripName" class="input" />
+        </div>
+        <div class="form-block">
+          <label>תיאור</label>
+          <input id="settingsTripSubtitle" class="input" />
+        </div>
+        <div class="helper">ההגדרות נשמרות לכל החדר וכל המשתתפים רואים את השינויים.</div>
+      </div>
+      <div class="modal-actions">
+        <button id="saveSettingsBtn" class="btn btn-primary">שמור</button>
+        <button class="btn btn-light close-modal-btn">סגור</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="itemModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-title">➕ הוספת פריט</div>
+      <div class="stack">
+        <div class="form-block">
+          <label>שם פריט</label>
+          <input id="itemNameInput" class="input" placeholder="מה צריך להביא?" />
+        </div>
+        <div class="row gap12">
+          <div class="form-block grow">
+            <label>קטגוריה</label>
+            <input id="itemCategoryInput" class="input" placeholder="כללי" />
+          </div>
+          <div class="form-block qty-col">
+            <label>כמות</label>
+            <input id="itemQtyInput" class="input" type="number" min="1" value="1" />
+          </div>
+        </div>
+        <div class="form-block">
+          <label>עדיפות</label>
+          <select id="itemPriorityInput" class="input">
+            <option value="required">חובה</option>
+            <option value="important">חשוב</option>
+            <option value="bonus">בונוס</option>
+          </select>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="saveItemBtn" class="btn btn-primary">הוסף</button>
+        <button class="btn btn-light close-modal-btn">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="ideaModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-title">💡 הוסף רעיון</div>
+      <div class="form-block">
+        <label>רעיון</label>
+        <input id="ideaTextInput" class="input" placeholder="כתוב רעיון..." />
+      </div>
+      <div class="modal-actions">
+        <button id="saveIdeaBtn" class="btn btn-primary">הוסף</button>
+        <button class="btn btn-light close-modal-btn">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="expenseModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-title">💰 הוסף הוצאה</div>
+      <div class="stack">
+        <div class="form-block">
+          <label>שם הוצאה</label>
+          <input id="expenseNameInput" class="input" placeholder="קרח, אוכל, פחמים..." />
+        </div>
+        <div class="row gap12">
+          <div class="form-block grow">
+            <label>סכום</label>
+            <input id="expenseAmountInput" class="input" type="number" min="0" step="1" />
+          </div>
+          <div class="form-block grow">
+            <label>מי שילם</label>
+            <select id="expensePaidByInput" class="input"></select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="saveExpenseBtn" class="btn btn-primary">הוסף</button>
+        <button class="btn btn-light close-modal-btn">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="memberModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-title">👥 הוסף חבר</div>
+      <div class="stack">
+        <div class="form-block">
+          <label>שם</label>
+          <input id="memberNameInput" class="input" placeholder="שם החבר" />
+        </div>
+        <div class="form-block">
+          <label>טלפון</label>
+          <input id="memberPhoneInput" class="input" dir="ltr" placeholder="0501234567" />
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button id="saveMemberBtn" class="btn btn-primary">הוסף</button>
+        <button class="btn btn-light close-modal-btn">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmModal" class="modal">
+    <div class="modal-box">
+      <div class="modal-title">🗑️ מחיקה</div>
+      <div class="helper">האם למחוק את הפריט הזה?</div>
+      <div class="modal-actions">
+        <button id="confirmDeleteBtn" class="btn btn-danger">מחק</button>
+        <button class="btn btn-light close-modal-btn">ביטול</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    window.FIREBASE_CONFIG = {
+      apiKey: "AIzaSyAUMMRBHKH5Q9RXU2DcF-uYv55J26PVU4",
+      authDomain: "yaakov-20a64.firebaseapp.com",
+      projectId: "yaakov-20a64",
+      storageBucket: "yaakov-20a64.firebasestorage.app",
+      messagingSenderId: "971870319296",
+      appId: "1:971870319296:web:e08d6848c2354578d7f325"
+    };
+  </script>
+  <script type="module" src="./app.js"></script>
+</body>
+</html>
